@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:ss_app/pages/privacy_page.dart';
 //import '../pages/login_page.dart';
 import '../pages/home_page.dart';
 import '../pages/chatbot_page.dart';
@@ -10,5 +11,6 @@ class AppRoutes {
     '/home': (_) => const HomePage(),
     '/chatbot': (_) => const ChatbotPage(),
     '/renew': (_) => const RenewPage(),
+    '/privacy': (_) => const PrivacyPage(),
   };
 }
