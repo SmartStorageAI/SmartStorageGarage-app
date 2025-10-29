@@ -4,7 +4,6 @@ import '../services/firebase_service.dart';
 
 class HomePage extends StatelessWidget {
   final String userEmail;
-
   const HomePage({super.key, required this.userEmail});
 
   @override
@@ -33,6 +32,7 @@ class HomePage extends StatelessWidget {
             final userName = userData['nombre'] ?? 'Usuario';
             final membresia = userData['membresia'] ?? 'N/A';
             final estadoPago = userData['estadoPago'] ?? 'N/A';
+            final userEmail = userData['email'] ?? 'N/A';
 
             return Column(
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -48,6 +48,8 @@ class HomePage extends StatelessWidget {
                 const SizedBox(height: 10),
                 Text('Membresía: $membresia'),
                 Text('Estado de pago: $estadoPago'),
+                Text('E-mail: $userEmail'),
+
                 const SizedBox(height: 20),
                 const Text(
                   'Tus contenedores:',
