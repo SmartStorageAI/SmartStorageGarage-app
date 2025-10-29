@@ -32,6 +32,7 @@
 
 ##  Estructura del proyecto:
 
+```
 lib/
 ├── assets/
 ├── models/
@@ -58,6 +59,7 @@ lib/
 │   └── custom_button.dart
 ├── firebase_options.dart
 └── main.dart
+```
 
 ## Próximas mejoras
 
