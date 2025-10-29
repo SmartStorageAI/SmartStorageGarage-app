@@ -31,33 +31,33 @@
 ---
 
 ##  Estructura del proyecto:
+
 lib/
 ├── assets/
 ├── models/
-│ ├── container_model.dart
-│ └── user_model.dart
+│   ├── container_model.dart
+│   └── user_model.dart
 ├── pages/
-│ ├── chatbot/
-│ ├── home/
-│ ├── login/
-│ ├── main_page.dart
-│ ├── privacy_page.dart
-│ ├── register_page.dart
-│ └── renew_page.dart
+│   ├── chatbot/
+│   ├── home/
+│   ├── login/
+│   ├── main_page.dart
+│   ├── privacy_page.dart
+│   ├── register_page.dart
+│   └── renew_page.dart
 ├── routes/
-│ └── app_routes.dart
+│   └── app_routes.dart
 ├── services/
-│ ├── auth_service.dart
-│ ├── chatbot_service.dart
-│ ├── firebase_service.dart
-│ └── n8n_service.dart
+│   ├── auth_service.dart
+│   ├── chatbot_service.dart
+│   ├── firebase_service.dart
+│   └── n8n_service.dart
 ├── widgets/
-│ ├── chat_bubble.dart
-│ ├── container_card.dart
-│ └── custom_button.dart
+│   ├── chat_bubble.dart
+│   ├── container_card.dart
+│   └── custom_button.dart
 ├── firebase_options.dart
 └── main.dart
-
 
 ## Próximas mejoras
 
