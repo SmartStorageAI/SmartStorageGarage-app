@@ -12,9 +12,12 @@ class LoginPage extends StatefulWidget {
 
 class _LoginPageState extends State<LoginPage> {
   final _authService = AuthService();
+  final _formKey = GlobalKey<FormState>();
   final _emailController = TextEditingController();
   final _passwordController = TextEditingController();
-  final _formKey = GlobalKey<FormState>();
+
+  bool _isPasswordVisible = false;
+  bool _isLoading = false;
 
   String? _validateCorreo(String? value) {
     if (value == null || value.isEmpty) {
@@ -27,92 +30,248 @@ class _LoginPageState extends State<LoginPage> {
     return null;
   }
 
-  void _login() async {
-    if (!_formKey.currentState!.validate()) {
-      return; // Si el correo no es válido, no hace login
-    }
+  Future<void> _login() async {
+    if (!_formKey.currentState!.validate()) return;
+
+    setState(() => _isLoading = true);
 
     final user = await _authService.loginUser(
       _emailController.text.trim(),
       _passwordController.text.trim(),
     );
 
+    setState(() => _isLoading = false);
+
     if (user != null) {
       Navigator.pushReplacement(
         context,
         MaterialPageRoute(
-          builder: (_) => MainPage(
-            userEmail: user.email!,
-          ),
+          builder: (_) => MainPage(userEmail: user.email!),
         ),
       );
     } else {
-      showDialog(
-        context: context,
-        builder: (context) {
-          return AlertDialog(
-            title: Row(
-              children: const [
-                Icon(Icons.error_outline, color: Colors.red),
-                SizedBox(width: 8),
-                Text('Error'),
-              ],
-            ),
-            content: const Text('La contraseña o el correo son incorrectos.'),
-            actions: [
-              TextButton(
-                style: TextButton.styleFrom(
-                  foregroundColor: Theme.of(context).colorScheme.primary,
-                ),
-                onPressed: () => Navigator.of(context).pop(),
-                child: const Text('Aceptar'),
-              ),
-            ],
-          );
-        },
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text('Correo o contraseña incorrectos.'),
+          backgroundColor: Colors.red,
+        ),
       );
     }
   }
 
   @override
   Widget build(BuildContext context) {
+    const morado = Color(0xFFA18CD1);
+    const azul = Color(0xFF758EB7);
+
     return Scaffold(
-      body: Padding(
-        padding: const EdgeInsets.all(20),
-        child: Center(
-          child: Form(
-            key: _formKey,
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                const Text('Iniciar Sesión', style: TextStyle(fontSize: 24)),
-                const SizedBox(height: 20),
-                TextFormField(
-                  controller: _emailController,
-                  keyboardType: TextInputType.emailAddress,
-                  decoration: const InputDecoration(labelText: 'Correo'),
-                  validator: _validateCorreo,
-                ),
-                TextFormField(
-                  controller: _passwordController,
-                  obscureText: true,
-                  decoration: const InputDecoration(labelText: 'Contraseña'),
-                ),
-                const SizedBox(height: 20),
-                ElevatedButton(onPressed: _login, child: const Text('Entrar')),
-                TextButton(
-                  onPressed: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(builder: (_) => const RegisterPage()),
-                    );
-                  },
-                  child: const Text('¿No tienes cuenta? Regístrate'),
-                )
-              ],
-            ),
-          ),
+      backgroundColor: Colors.grey[100],
+      body: Center(
+        child: LayoutBuilder(
+          builder: (context, constraints) {
+            final isMobile = constraints.maxWidth < 800;
+
+            return Container(
+              margin: const EdgeInsets.all(20),
+              height: 520,
+              width: isMobile ? double.infinity : 900,
+              decoration: BoxDecoration(
+                color: Colors.white,
+                borderRadius: BorderRadius.circular(20),
+                boxShadow: [
+                  BoxShadow(
+                    color: Colors.black12.withOpacity(0.1),
+                    blurRadius: 10,
+                    offset: const Offset(0, 4),
+                  ),
+                ],
+              ),
+              child: Row(
+                children: [
+                  // 🔹 LADO IZQUIERDO: FORMULARIO
+                  Expanded(
+                    flex: 5,
+                    child: Padding(
+                      padding: const EdgeInsets.all(40),
+                      child: SingleChildScrollView(
+                        child: Form(
+                          key: _formKey,
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              const Text(
+                                "Iniciar sesión",
+                                style: TextStyle(
+                                  fontSize: 28,
+                                  fontWeight: FontWeight.bold,
+                                  color: azul,
+                                ),
+                              ),
+                              const SizedBox(height: 8),
+                              //const SizedBox(height: 30),
+
+                              // 🔹 Email
+                              TextFormField(
+                                controller: _emailController,
+                                keyboardType: TextInputType.emailAddress,
+                                decoration: _inputDecoration(
+                                  'Correo electrónico',
+                                  Icons.email,
+                                ),
+                                validator: _validateCorreo,
+                              ),
+                              const SizedBox(height: 20),
+
+                              // 🔹 Contraseña
+                              TextFormField(
+                                controller: _passwordController,
+                                obscureText: !_isPasswordVisible,
+                                decoration: _inputDecoration(
+                                  'Contraseña',
+                                  Icons.lock,
+                                  suffix: IconButton(
+                                    icon: Icon(
+                                      _isPasswordVisible
+                                          ? Icons.visibility
+                                          : Icons.visibility_off,
+                                      color: Colors.grey,
+                                    ),
+                                    onPressed: () => setState(() =>
+                                        _isPasswordVisible =
+                                            !_isPasswordVisible),
+                                  ),
+                                ),
+                                validator: (v) {
+                                  if (v == null || v.length < 8) {
+                                    return 'Mínimo 8 caracteres';
+                                  }
+                                  return null;
+                                },
+                              ),
+                              const SizedBox(height: 30),
+
+                              // 🔹 Botón de Login
+                              SizedBox(
+                                width: double.infinity,
+                                height: 48,
+                                child: ElevatedButton(
+                                  onPressed: _isLoading ? null : _login,
+                                  style: ElevatedButton.styleFrom(
+                                    backgroundColor: azul,
+                                    shape: RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(8),
+                                    ),
+                                  ),
+                                  child: _isLoading
+                                      ? const SizedBox(
+                                          width: 24,
+                                          height: 24,
+                                          child: CircularProgressIndicator(
+                                            color: Colors.white,
+                                            strokeWidth: 3,
+                                          ),
+                                        )
+                                      : const Text(
+                                          "ENTRAR",
+                                          style: TextStyle(
+                                              fontSize: 16,
+                                              fontWeight: FontWeight.bold,
+                                              color: Colors.white),
+                                        ),
+                                ),
+                              ),
+                                                            const SizedBox(height: 30),
+
+                              Row(
+                                children: [
+                                  const Text("¿No tienes cuenta? "),
+                                  GestureDetector(
+                                    onTap: () {
+                                      Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                          builder: (_) => const RegisterPage(),
+                                        ),
+                                      );
+                                    },
+                                    child: const Text(
+                                      "Regístrate",
+                                      style: TextStyle(
+                                          color: morado,
+                                          fontWeight: FontWeight.bold),
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+                    ),
+                  ),
+
+                  // 🔹 LADO DERECHO: Bienvenida con logo
+                  if (!isMobile)
+                    Expanded(
+                      flex: 5,
+                      child: Container(
+                        decoration: const BoxDecoration(
+                          gradient: LinearGradient(
+                            colors: [morado, azul],
+                            begin: Alignment.topLeft,
+                            end: Alignment.bottomRight,
+                          ),
+                          borderRadius: BorderRadius.horizontal(
+                            right: Radius.circular(20),
+                          ),
+                        ),
+                        child: Padding(
+                          padding: const EdgeInsets.all(40),
+                          child: Align(
+                            alignment: Alignment.center,
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                const Text(
+                                  "Smart Storage Garage",
+                                  textAlign: TextAlign.center,
+                                  style: TextStyle(
+                                    color: Colors.white,
+                                    fontSize: 36,
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                ),
+                                const SizedBox(height: 25),
+                                Image.asset(
+                                  'assets/logo.png', // ← Ajusta la ruta a tu logo
+                                  width: 180,
+                                  height: 180,
+                                  fit: BoxFit.contain,
+                                ),
+                              ],
+                            ),
+                          ),
+                        ),
+                      ),
+                    ),
+                ],
+              ),
+            );
+          },
         ),
+      ),
+    );
+  }
+
+  InputDecoration _inputDecoration(String label, IconData icon,
+      {Widget? suffix}) {
+    return InputDecoration(
+      labelText: label,
+      prefixIcon: Icon(icon, color: const Color(0xFF758EB7)),
+      suffixIcon: suffix,
+      border: OutlineInputBorder(borderRadius: BorderRadius.circular(10)),
+      focusedBorder: const OutlineInputBorder(
+        borderSide: BorderSide(color: Color(0xFF758EB7), width: 2),
       ),
     );
   }
