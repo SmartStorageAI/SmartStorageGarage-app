@@ -30,7 +30,7 @@
 
 ---
 
-## 🧠 Estructura del proyecto:
+##  Estructura del proyecto:
 lib/
 ├── assets/
 ├── models/
@@ -59,7 +59,7 @@ lib/
 └── main.dart
 
 
-##Próximas mejoras
+## Próximas mejoras
 
 Cifrado local de contraseñas y tokens (AES-GCM).
 
