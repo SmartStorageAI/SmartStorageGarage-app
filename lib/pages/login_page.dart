@@ -97,7 +97,7 @@ class _LoginPageState extends State<LoginPage> {
                         child: Form(
                           key: _formKey,
                           child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
+                            crossAxisAlignment: CrossAxisAlignment.center, // <- CENTRAR
                             children: [
                               const Text(
                                 "Iniciar sesión",
@@ -106,9 +106,9 @@ class _LoginPageState extends State<LoginPage> {
                                   fontWeight: FontWeight.bold,
                                   color: azul,
                                 ),
+                                textAlign: TextAlign.center, // <- CENTRAR
                               ),
                               const SizedBox(height: 8),
-                              //const SizedBox(height: 30),
 
                               // 🔹 Email
                               TextFormField(
@@ -180,28 +180,32 @@ class _LoginPageState extends State<LoginPage> {
                                         ),
                                 ),
                               ),
-                                                            const SizedBox(height: 30),
+                              const SizedBox(height: 30),
 
-                              Row(
-                                children: [
-                                  const Text("¿No tienes cuenta? "),
-                                  GestureDetector(
-                                    onTap: () {
-                                      Navigator.push(
-                                        context,
-                                        MaterialPageRoute(
-                                          builder: (_) => const RegisterPage(),
-                                        ),
-                                      );
-                                    },
-                                    child: const Text(
-                                      "Regístrate",
-                                      style: TextStyle(
-                                          color: morado,
-                                          fontWeight: FontWeight.bold),
+                              Center( // <- CENTRAR LA FILA
+                                child: Row(
+                                  mainAxisSize: MainAxisSize.min,
+                                  children: [
+                                    const Text("¿No tienes cuenta? "),
+                                    GestureDetector(
+                                      onTap: () {
+                                        Navigator.push(
+                                          context,
+                                          MaterialPageRoute(
+                                            builder: (_) =>
+                                                const RegisterPage(),
+                                          ),
+                                        );
+                                      },
+                                      child: const Text(
+                                        "Regístrate",
+                                        style: TextStyle(
+                                            color: morado,
+                                            fontWeight: FontWeight.bold),
+                                      ),
                                     ),
-                                  ),
-                                ],
+                                  ],
+                                ),
                               ),
                             ],
                           ),
@@ -243,7 +247,7 @@ class _LoginPageState extends State<LoginPage> {
                                 ),
                                 const SizedBox(height: 25),
                                 Image.asset(
-                                  'assets/logo.png', // ← Ajusta la ruta a tu logo
+                                  'assets/icons/app_icon.png', // ← Ajusta la ruta a tu logo
                                   width: 180,
                                   height: 180,
                                   fit: BoxFit.contain,

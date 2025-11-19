@@ -141,9 +141,13 @@ class _RegisterPageState extends State<RegisterPage> {
                           key: _formKey,
                           autovalidateMode: AutovalidateMode.onUserInteraction,
                           child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
+                            crossAxisAlignment: CrossAxisAlignment.center, // <- CENTRAR TODO
                             children: [
-                              const Text("Registro", style: TextStyle(fontSize: 28, fontWeight: FontWeight.bold, color: azul)),
+                              const Text(
+                                "Registro",
+                                style: TextStyle(fontSize: 28, fontWeight: FontWeight.bold, color: azul),
+                                textAlign: TextAlign.center, // <- CENTRAR TEXTO
+                              ),
                               const SizedBox(height: 10),
                               // NOMBRE
                               TextFormField(
@@ -250,7 +254,7 @@ class _RegisterPageState extends State<RegisterPage> {
                                   style: TextStyle(color: Colors.white, fontSize: 36, fontWeight: FontWeight.bold),
                                 ),
                                 const SizedBox(height: 25),
-                                Image.asset('assets/logo.png', width: 180, height: 180, fit: BoxFit.contain),
+                                Image.asset('assets/icons/app_icon.png', width: 180, height: 180, fit: BoxFit.contain),
                               ],
                             ),
                           ),

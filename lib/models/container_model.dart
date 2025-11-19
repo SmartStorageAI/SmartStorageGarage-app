@@ -4,6 +4,7 @@ class ContainerModel {
   final String cliente;
   final String size;
   final bool status;
+  final String ubicacion;
 
   ContainerModel({
     required this.id,
@@ -11,15 +12,22 @@ class ContainerModel {
     required this.cliente,
     required this.size,
     required this.status,
+    required this.ubicacion,
   });
 
   factory ContainerModel.fromMap(String id, Map<String, dynamic> data) {
+    // Si tiene cliente, el estado debe ser ocupado
+    final hasCliente = data['cliente'] != null && 
+                       (data['cliente'] as String).isNotEmpty;
+    final status = hasCliente ? true : (data['status'] ?? false);
+    
     return ContainerModel(
       id: id,
       nombre: data['nombre'] ?? '',
       cliente: data['cliente'] ?? '',
       size: data['size'] ?? '',
-      status: data['status'] ?? false,
+      status: status,
+      ubicacion: data['ubicacion'] ?? '',
     );
   }
 
@@ -29,6 +37,7 @@ class ContainerModel {
       'cliente': cliente,
       'size': size,
       'status': status,
+      'ubicacion': ubicacion,
     };
   }
 }

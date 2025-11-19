@@ -17,12 +17,42 @@ class SmartStorageApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    // Colores del login
+    const morado = Color(0xFFA18CD1);
+    const azul = Color(0xFF758EB7);
+    
     return MaterialApp(
       title: 'Smart Storage App',
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
         colorScheme: ColorScheme.fromSeed(
-            seedColor: const Color.fromARGB(255, 115, 176, 247)),
+          seedColor: azul,
+          primary: azul,
+          secondary: morado,
+        ),
+        scaffoldBackgroundColor: Colors.grey[100],
+        appBarTheme: const AppBarTheme(
+          backgroundColor: azul,
+          foregroundColor: Colors.white,
+          elevation: 0,
+        ),
+        elevatedButtonTheme: ElevatedButtonThemeData(
+          style: ElevatedButton.styleFrom(
+            backgroundColor: azul,
+            foregroundColor: Colors.white,
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(8),
+            ),
+          ),
+        ),
+        inputDecorationTheme: InputDecorationTheme(
+          focusedBorder: const OutlineInputBorder(
+            borderSide: BorderSide(color: azul, width: 2),
+          ),
+          border: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(10),
+          ),
+        ),
         useMaterial3: true,
       ),
 
@@ -30,7 +60,6 @@ class SmartStorageApp extends StatelessWidget {
       routes: {
         '/login': (context) => const LoginPage(),
         '/main': (context) {
-          // Esto es solo para referencia, normalmente pasamos email al construir MainPage
           final args =
               ModalRoute.of(context)!.settings.arguments as String?;
           return MainPage(userEmail: args ?? '');

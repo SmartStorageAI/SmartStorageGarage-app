@@ -5,9 +5,13 @@ class PrivacyPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    const azul = Color(0xFF758EB7);
     return Scaffold(
+      backgroundColor: Colors.grey[100],
       appBar: AppBar(
         title: const Text('Aviso de Privacidad'),
+        backgroundColor: azul,
+        foregroundColor: Colors.white,
       ),
       body: SingleChildScrollView(
         padding: const EdgeInsets.all(16),
@@ -43,7 +47,7 @@ class PrivacyPage extends StatelessWidget {
               style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
             ),
             Text(
-              'Los datos que nos proporcionas son utilizados exclusivamente para:\n\n• Brindarte soporte y asistencia personalizada a través de nuestro chat, asegurando una experiencia eficiente y confiable.\n\n• Mejorar de manera continua la funcionalidad, rendimiento y seguridad de la aplicación, adaptándola a tus necesidades.\n\n• Enviarte notificaciones relevantes relacionadas con tu cuenta, los servicios que utilizas o actualizaciones importantes de la app.\n\nSolo solicitamos y procesamos la información estrictamente necesaria para cumplir con estas finalidades, evitando recopilar datos innecesarios.',
+              'Los datos que nos proporcionas son utilizados exclusivamente para:\n\n• Brindarte soporte y asistencia personalizada a través de nuestro chat, asegurando una experiencia eficiente y confiable.\n\n• Mejorar de manera continua la funcionalidad, rendimiento y seguridad de la aplicación, adaptándola a tus necesidades.\n\n• Enviarte notificaciones relevantes relacionadas con tu cuenta, los servicios que utilizas o actualizaciones importantes de la app.\n\n• Mostrar tu foto de perfil dentro de la aplicación (por ejemplo en “Mi cuenta” y el menú lateral) para personalizar tu experiencia. Esta imagen se almacena de forma segura y nunca se comparte con terceros sin tu autorización.\n\nSolo solicitamos y procesamos la información estrictamente necesaria para cumplir con estas finalidades, evitando recopilar datos innecesarios.',
               style: TextStyle(fontSize: 16),
             ),
             SizedBox(height: 12),
